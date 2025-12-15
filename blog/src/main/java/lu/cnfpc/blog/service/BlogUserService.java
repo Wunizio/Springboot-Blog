@@ -26,4 +26,8 @@ public class BlogUserService {
         return userRepository.findById(user_id).orElseThrow(() -> new BlogUserNotFoundException("Customer not found with ID " + user_id));
     }
 
+    public BlogUser loginUser(String name, String password){
+        return userRepository.findByNameAndPassword(name, password);
+    }
+
 }

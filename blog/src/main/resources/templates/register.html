@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register User</title>
+</head>
+<body>
+        <form method="post" th:object="${blogUser}" th:action="@{/handleRegister}">
+            Name
+            <input type="text" th:field="*{name}" />
+            <br>
+            Password
+            <input type="text" th:field="*{password}" />
+            <br>
+            <input type="submit" value="Register" />
+        </form>
+</body>
+</html>
