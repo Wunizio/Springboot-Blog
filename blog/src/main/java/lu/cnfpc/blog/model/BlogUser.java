@@ -2,6 +2,7 @@ package lu.cnfpc.blog.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +18,7 @@ public class BlogUser {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long userId;
 
+    @Column(unique=true)
     @NotBlank
     @Size(min=3, max=25)
     private String name;
@@ -36,8 +38,15 @@ public class BlogUser {
 
 
     public BlogUser(){
-        
+        setCreationDate(LocalDateTime.now());
     }
+
+    public BlogUser(String userName, String password){
+        setName(userName);
+        setPassword(password);
+        setCreationDate(LocalDateTime.now());
+    }
+
     public Long getUserId() {
         return userId;
     }

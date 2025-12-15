@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>This is My login!</title>
+</head>
+<body>
+    <h1>Please Log In</h1>
+		<form th:action="@{/handleLogin}" method="post">
+        Username : <input type="text" name="username">
+        <br/>
+        Password : <input type="password" name="password">
+        <br/>
+        <input type="submit" value="Login">
+    </form>
+
+    <h1>Register</h1>
+		<form method="post" th:object="${blogUser}" th:action="@{/handleRegister}" >
+        Username : <input type="text" name="username" th:field="*{name}">
+        <br/>
+        Password : <input type="password" name="password" th:field="*{password}">
+        <br/>
+        <input type="hidden" th:field="*{userId}">
+        <input type="hidden" th:field="*{creationDate}">
+        <input type="hidden" th:field="*{lastLogin}">
+        <input type="hidden" th:field="*{profilePicture}">
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>

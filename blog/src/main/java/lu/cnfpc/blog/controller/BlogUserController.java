@@ -24,7 +24,7 @@ public class BlogUserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/maine")
     public String index(Principal principal, Authentication auth, Model model) {
         System.out.println(auth.getPrincipal().toString());
         System.out.println(auth.getCredentials());
@@ -35,12 +35,12 @@ public class BlogUserController {
         System.out.println("The principal is " +principal.getName());
         String userName = principal.getName();
         model.addAttribute("userName", userName);
-        return "index.html";
+        return "main";
     }
 
-    @GetMapping("/customLogin")
-    public String test(@RequestParam String param) {
-        return "index.html";
+    @GetMapping("/main")
+    public String getMethodName(@RequestParam String param) {
+        return "main";
     }
     
     
