@@ -9,6 +9,6 @@
     <cite th:text="'Written by ' +${post.blogUser.name} +' on the ' +${post.creationDate}"></cite>
     <h1 th:text="${post.name}"></h1>
     <article th:text="${post.content}"></article>
-    <a th:if="${isOwner == true}">Delete</a>
+    <a th:if="${post.blogUser.name == session.userName}" th:href="@{/deletePost(id=${post.postId})}">Delete</a>
 </body>
 </html>

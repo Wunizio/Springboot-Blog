@@ -11,14 +11,12 @@ import lu.cnfpc.blog.model.Post;
 import lu.cnfpc.blog.service.BlogUserService;
 import lu.cnfpc.blog.service.PostService;
 
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -71,11 +69,19 @@ public class PostController {
         }
 
         Post post = postService.gePost(id);
-        boolean isOwner = userName == post.getBlogUser().getName() ? true : false;
-
-        model.addAttribute("isOwner", isOwner);
         model.addAttribute("post", post);
         return "post";
+    }
+
+    @GetMapping("/deletePost")
+    public String deletePost(HttpSession session, @RequestParam Long id, Model model) {
+        //Check if owner of Post
+         String postOwner = postService.gePost(id).getBlogUser().getName();
+         String sessionOwner = session.getAttribute("userName").toString();
+        if(postOwner.equals(sessionOwner)){
+            postService.deletePost(id);
+        }
+        return "redirect:/home";
     }
     
 

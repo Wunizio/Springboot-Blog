@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
