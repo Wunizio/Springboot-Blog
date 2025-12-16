@@ -6,6 +6,12 @@
     <title>Create a new Blog!</title>
 </head>
 <body>
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/blogUser(userName=${session.userName})}">Profile</a>
+        <a th:href="@{/createBlogpost}">Create new Blogpost</a>
+        <a th:href="@{/logout}">Logout</a>
+    </nav>
     <form method="post" th:object="${blogPost}" th:action="@{/handleCreatePost}">
             Name
             <br>

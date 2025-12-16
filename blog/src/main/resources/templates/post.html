@@ -6,6 +6,13 @@
     <title>Post</title>
 </head>
 <body>
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/blogUser(userName=${session.userName})}">Profile</a>
+        <a th:href="@{/createBlogpost}">Create new Blogpost</a>
+        <a th:href="@{/logout}">Logout</a>
+    </nav>
+
     <cite th:text="${post.creationDate}"></cite>
     <h3>Written by <a th:text="${post.blogUser.name}" th:href="@{/blogUser(userName=${post.blogUser.name})}"></a> </h3>
     <h1 th:text="${post.name}"></h1>
