@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lu.cnfpc.blog.exception.BlogUserNotFoundException;
 import lu.cnfpc.blog.exception.PostNotFoundException;
 import lu.cnfpc.blog.model.BlogUser;
 import lu.cnfpc.blog.model.Post;
@@ -28,7 +29,7 @@ public class PostService {
     }
 
     public List<Post> getAllPostByUser(BlogUser user){
-        return postRepository.FindByBlogUser(user);
+        return postRepository.findByBlogUser(user);
     }
     
 }

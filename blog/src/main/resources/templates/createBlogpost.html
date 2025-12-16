@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a new Blog!</title>
+</head>
+<body>
+    <form method="post" th:object="${blogPost}" th:action="@{/handleCreatePost}">
+            Name
+            <br>
+            <input type="text" th:field="*{name}" />
+            <br>
+            Content
+            <br>
+            <textarea th:field="*{content}" />
+            <br>
+            <!-- Not Secure -->
+            <input type="hidden" th:field="*{blogUser}">
+            <input type="submit" value="Register" />
+        </form>
+</body>
+</html>

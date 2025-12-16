@@ -34,7 +34,7 @@ public class Post {
     private BlogUser blogUser;
 
     public Post(){
-        
+        setCreationDate(LocalDateTime.now());
     }
 
     public Long getPostId() {

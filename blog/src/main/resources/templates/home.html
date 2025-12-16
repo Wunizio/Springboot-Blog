@@ -6,6 +6,7 @@
     <title>Home</title>
 </head>
 <body>
-    <h th:text="${blogUser.name}"></h>
+    <h th:text="${'Welcome ' +blogUser.name+'!'}"></h>
+    <a th:href="@{/createBlogpost(name=${blogUser.name})}">Create new Blogpost</a>
 </body>
 </html>

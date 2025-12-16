@@ -10,5 +10,5 @@ import lu.cnfpc.blog.model.Post;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long>{
-    List<Post> FindByBlogUser(BlogUser user);
+    List<Post> findByBlogUser(BlogUser user);
 }

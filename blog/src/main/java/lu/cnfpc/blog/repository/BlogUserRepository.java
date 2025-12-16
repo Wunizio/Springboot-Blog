@@ -8,4 +8,5 @@ import lu.cnfpc.blog.model.BlogUser;
 @Repository
 public interface BlogUserRepository extends JpaRepository<BlogUser, Long> {
     BlogUser findByNameAndPassword(String name, String password);
+    BlogUser findByName(String name);
 }
