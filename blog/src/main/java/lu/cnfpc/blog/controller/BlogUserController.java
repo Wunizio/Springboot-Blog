@@ -38,6 +38,7 @@ public class BlogUserController {
 
     @GetMapping("/")    
     public String getIndex(Model model, HttpSession session) {
+        //If session attribute exists, return to homepage
         String userName = (String) session.getAttribute("userName");
         if(userName != null){
             return "redirect:/home";
@@ -61,7 +62,12 @@ public class BlogUserController {
     }
 
     @GetMapping("/blogUser")
-    public String getBlogUser(@RequestParam String userName, Model model) {
+    public String getBlogUser(@RequestParam String userName, Model model, HttpSession session) {
+        String sessionName = (String) session.getAttribute("userName");
+        if(sessionName == null){
+            return "redirect:/home";
+        }
+
         BlogUser blogUser = userService.getUserByName(userName);
         List<Post> posts = postService.getAllPostByUser(blogUser);
         model.addAttribute("blogUser", blogUser);

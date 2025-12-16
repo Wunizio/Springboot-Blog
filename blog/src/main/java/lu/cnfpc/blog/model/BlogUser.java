@@ -92,5 +92,13 @@ public class BlogUser {
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+    
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
     
 }

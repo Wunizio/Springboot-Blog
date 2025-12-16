@@ -1,14 +1,17 @@
 package lu.cnfpc.blog.controller;
 
 import java.io.Console;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import lu.cnfpc.blog.model.BlogUser;
+import lu.cnfpc.blog.model.Category;
 import lu.cnfpc.blog.model.Post;
 import lu.cnfpc.blog.service.BlogUserService;
+import lu.cnfpc.blog.service.CategoryService;
 import lu.cnfpc.blog.service.PostService;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +30,13 @@ public class PostController {
     private final PostService postService;
     @Autowired
     private final BlogUserService blogUserService;
+    @Autowired
+    private final CategoryService categoryService;
 
-    public PostController(PostService postService, BlogUserService blogUserService){
+    public PostController(PostService postService, BlogUserService blogUserService, CategoryService categoryService){
         this.postService = postService;
         this.blogUserService = blogUserService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/home")
@@ -55,8 +61,13 @@ public class PostController {
 
         BlogUser blogUser = blogUserService.getUserByName(userName);
         model.addAttribute("blogUser", blogUser);
+        
         Post post = new Post();
         post.setBlogUser(blogUser);
+
+        List<Category> categories = categoryService.getAllCategories();
+
+        model.addAttribute("categories", categories);
         model.addAttribute("blogPost", post);
         return "createBlogpost";
     }
@@ -67,7 +78,6 @@ public class PostController {
         if(userName == null){
             return "redirect:/";
         }
-
         Post post = postService.gePost(id);
         model.addAttribute("post", post);
         return "post";

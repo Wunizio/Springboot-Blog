@@ -33,6 +33,11 @@ public class Post {
     @JoinColumn(name="blogUserId")
     private BlogUser blogUser;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="categoryId")
+    private Category category;
+
+
     public Post(){
         setCreationDate(LocalDateTime.now());
     }
@@ -75,6 +80,14 @@ public class Post {
 
     public void setBlogUser(BlogUser blogUser) {
         this.blogUser = blogUser;
+    }
+
+     public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
 
