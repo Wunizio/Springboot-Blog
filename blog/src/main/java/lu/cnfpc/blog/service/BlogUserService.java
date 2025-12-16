@@ -22,8 +22,8 @@ public class BlogUserService {
         userRepository.save(user);
     }
 
-    public BlogUser getUser(Long user_id){
-        return userRepository.findById(user_id).orElseThrow(() -> new BlogUserNotFoundException("Customer not found with ID " + user_id));
+    public BlogUser getUser(Long userId){
+        return userRepository.findById(userId).orElseThrow(() -> new BlogUserNotFoundException("Customer not found with ID " + userId));
     }
 
     public BlogUser loginUser(String name, String password){

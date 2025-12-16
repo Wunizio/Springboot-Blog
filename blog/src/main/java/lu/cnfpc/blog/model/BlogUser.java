@@ -1,14 +1,15 @@
 package lu.cnfpc.blog.model;
 
 import java.time.LocalDateTime;
-
-import org.springframework.cglib.core.Local;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
@@ -18,7 +19,7 @@ public class BlogUser {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long userId;
+    private Long blogUserId;
 
     @Column(unique=true)
     @NotBlank
@@ -37,16 +38,19 @@ public class BlogUser {
 
     private String profilePicture;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "blogUser")
+    private List<Post> posts;
+
 
     public BlogUser(){
         setCreationDate(LocalDateTime.now());
     }
-    public Long getUserId() {
-        return userId;
+    public Long getBlogUserId() {
+        return blogUserId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setBlogUserId(Long userId) {
+        this.blogUserId = userId;
     }
 
     public String getName() {
