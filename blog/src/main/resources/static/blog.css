@@ -1,0 +1,100 @@
+body{
+    background-color: #F4FDFF;
+}
+
+nav {
+	background: #1C448E;
+	height: 48px;
+	border-radius: 7px;
+}
+
+nav a{
+    display: block;
+	line-height: 48px;
+	padding: 0 14px;
+	text-decoration: none;
+	color: white;
+	font-size: 20px;
+	border-radius: 7px;
+}
+
+nav a:hover{
+	color: black;
+	background: #F2F2F2;
+}
+
+nav ul, nav li{
+    margin: 0 auto;
+	padding: 0;
+	list-style: none
+}
+
+nav ul {
+	width: 100%;
+	text-align: left;
+    padding-left: 6px;
+}
+
+nav li {
+	display: inline-block;
+	position: relative;
+}
+
+nav a:active{
+    background-color: gainsboro;
+}
+
+#title{
+    font-size: 50px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#blogPosts {
+    border: 6px solid #948473;
+    background-color: #FFE3C6;
+    width: 40%;
+    text-align: center;
+}
+
+#blogPosts td, #blogPosts th{
+    border: 1px solid #948473;
+    padding: 4px 4px;
+}
+
+#blogPosts th{
+    background: #948473;
+    font-size: 17px;
+    font-weight: bold;
+    color: #F0F0F0;
+    text-align: center;
+}
+
+#blogForm{
+    border: 6px solid #948473;
+    background-color: #FFE3C6;
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    top: 50%;
+    left: 50% ;
+    transform: translate(-50%, -50%);
+    text-align: center;
+	display: inline-block;
+}
+
+#blogForm textarea{
+    resize: none;
+}
+
+.title{
+    text-align: left;
+    border-bottom: 2px black solid;
+    margin-bottom: 20px;
+    font-size: 30px;
+	display: inline-block;
+}
+
+#blogForm .input{
+    display: inline-block;
+    margin-bottom: 30px;
+}

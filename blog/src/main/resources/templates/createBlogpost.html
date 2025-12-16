@@ -3,27 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/blog.css}" />
     <title>Create a new Blog!</title>
 </head>
 <body>
-    <nav>
-        <a th:href="@{/}">Home</a>
-        <a th:href="@{/blogUser(userName=${session.userName})}">Profile</a>
-        <a th:href="@{/createBlogpost}">Create new Blogpost</a>
-        <a th:href="@{/logout}">Logout</a>
+     <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/blogUser(userName=${session.userName})}">Profile</a></li>
+            <li><a th:href="@{/createBlogpost}">Create new Blogpost</a></li>
+            <li><a th:href="@{/logout}">Logout</a></li>
+        </ul>
     </nav>
-    <form method="post" th:object="${blogPost}" th:action="@{/handleCreatePost}">
-            Name
+
+    <form id="blogForm" method="post" th:object="${blogPost}" th:action="@{/handleCreatePost}">
+            <strong class="title">Name</strong>
             <br>
-            <input type="text" th:field="*{name}" />
+            <input class="input" type="text" th:field="*{name}" />
             <br>
-            <select th:field="*{category}">
+            <strong class="title">Category</strong>
+            <br>
+            <select class="input" th:field="*{category}">
                 <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option>
             </select>
             <br>
-            Content
+            <strong class="title">Content</strong>
             <br>
-            <textarea th:field="*{content}" />
+            <textarea class="input" th:field="*{content}" rows="4" cols="50"></textarea>
             <br>
             <input type="submit" value="Register" />
         </form>
