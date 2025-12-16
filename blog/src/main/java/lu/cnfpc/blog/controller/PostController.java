@@ -86,20 +86,21 @@ public class PostController {
     @GetMapping("/deletePost")
     public String deletePost(HttpSession session, @RequestParam Long id, Model model) {
         //Check if owner of Post
-         String postOwner = postService.gePost(id).getBlogUser().getName();
-         String sessionOwner = session.getAttribute("userName").toString();
+        String postOwner = postService.gePost(id).getBlogUser().getName();
+        String sessionOwner = session.getAttribute("userName").toString();
         if(postOwner.equals(sessionOwner)){
             postService.deletePost(id);
         }
         return "redirect:/home";
     }
-    
 
     @PostMapping("/handleCreatePost")
-    public String createPost(Post post) {
+    public String createPost(Post post, HttpSession session) {
+        //Set BlogUser in Post based on session attribute
+        BlogUser blogOwner = blogUserService.getUserByName(session.getAttribute("userName").toString());
+        post.setBlogUser(blogOwner);
         postService.submitPost(post);
-        //Not Secure
-        return "redirect:/home?name="+post.getBlogUser().getName();
+        return "redirect:/home";
     }
     
     
