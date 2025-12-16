@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-</head>
+</head> 
 <body>
-    <h th:text="${'Welcome ' +blogUser.name+'!'}"></h>
+    <h1 th:text="${'Welcome ' +blogUser.name+'!'}"></h1>
+    <a th:href="@{/logout}">Logout</a>
     <a th:href="@{/createBlogpost(name=${blogUser.name})}">Create new Blogpost</a>
 
     <br>
     <tr th:each="post : ${posts}">
-        <td th:text="${post.name}"></td>
+        <a th:text="${post.name}" th:href="@{/post(name=${post.blogUser.name}, id=${post.postId})}"></a>
         <br>
     </tr>
 </body>

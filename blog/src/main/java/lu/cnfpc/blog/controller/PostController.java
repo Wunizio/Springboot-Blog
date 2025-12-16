@@ -10,8 +10,13 @@ import lu.cnfpc.blog.model.BlogUser;
 import lu.cnfpc.blog.model.Post;
 import lu.cnfpc.blog.service.BlogUserService;
 import lu.cnfpc.blog.service.PostService;
+
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -31,23 +36,48 @@ public class PostController {
     }
 
     @GetMapping("/home")
-    public String getHome(@RequestParam String name, Model model) {
-        BlogUser blogUser = blogUserService.getUserByName(name);
-        //Not Secure
+    public String getHome(HttpSession session, Model model) {
+        String userName = (String) session.getAttribute("userName");
+        if(userName == null){
+            return "redirect:/";
+        }
+
+        BlogUser blogUser = blogUserService.getUserByName(userName);
         model.addAttribute("blogUser", blogUser);
         model.addAttribute("posts", postService.getAllPostByUser(blogUser));
         return "home";
     }
 
     @GetMapping("/createBlogpost")
-    public String getCreateBlog(@RequestParam String name, Model model) {
-        BlogUser blogUser = blogUserService.getUserByName(name);
+    public String getCreateBlogPost(HttpSession session, Model model) {
+        String userName = (String) session.getAttribute("userName");
+        if(userName == null){
+            return "redirect:/";
+        }
+
+        BlogUser blogUser = blogUserService.getUserByName(userName);
         model.addAttribute("blogUser", blogUser);
         Post post = new Post();
         post.setBlogUser(blogUser);
         model.addAttribute("blogPost", post);
         return "createBlogpost";
     }
+
+    @GetMapping("/post")
+    public String getShowBlogPost(HttpSession session, @RequestParam Long id, Model model) {
+        String userName = (String) session.getAttribute("userName");
+        if(userName == null){
+            return "redirect:/";
+        }
+
+        Post post = postService.gePost(id);
+        boolean isOwner = userName == post.getBlogUser().getName() ? true : false;
+
+        model.addAttribute("isOwner", isOwner);
+        model.addAttribute("post", post);
+        return "post";
+    }
+    
 
     @PostMapping("/handleCreatePost")
     public String createPost(Post post) {
