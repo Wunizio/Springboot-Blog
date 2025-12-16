@@ -3,15 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head> 
+    <title>BlogUser</title>
+</head>
 <body>
-    <h1 th:text="${'Welcome ' +blogUser.name+'!'}"></h1>
-    <a th:href="@{/blogUser(userName=${blogUser.name})}">Profile</a>
+    <h1 th:text="${'Welcome to ' + blogUser.name+'s profile!'}"></h1>
     <br>
-    <a th:href="@{/logout}">Logout</a>
-    <a th:href="@{/createBlogpost(name=${blogUser.name})}">Create new Blogpost</a>
-
     <br>
     <tr th:each="post : ${posts}">
         <a th:text="${post.name}" th:href="@{/post(name=${post.blogUser.name}, id=${post.postId})}"></a>

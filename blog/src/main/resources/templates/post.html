@@ -6,7 +6,8 @@
     <title>Post</title>
 </head>
 <body>
-    <cite th:text="'Written by ' +${post.blogUser.name} +' on the ' +${post.creationDate}"></cite>
+    <cite th:text="${post.creationDate}"></cite>
+    <h3>Written by <a th:text="${post.blogUser.name}" th:href="@{/blogUser(userName=${post.blogUser.name})}"></a> </h3>
     <h1 th:text="${post.name}"></h1>
     <article th:text="${post.content}"></article>
     <a th:if="${post.blogUser.name == session.userName}" th:href="@{/deletePost(id=${post.postId})}">Delete</a>

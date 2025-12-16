@@ -1,11 +1,15 @@
 package lu.cnfpc.blog.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import lu.cnfpc.blog.model.BlogUser;
+import lu.cnfpc.blog.model.Post;
 import lu.cnfpc.blog.service.BlogUserService;
+import lu.cnfpc.blog.service.PostService;
 
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +28,12 @@ public class BlogUserController {
     
     @Autowired 
     private final BlogUserService userService;
+    @Autowired
+    private final PostService postService;
 
-    public BlogUserController(BlogUserService userService){
+    public BlogUserController(BlogUserService userService, PostService postService){
         this.userService = userService;
+        this.postService = postService;
     }
 
     @GetMapping("/")    
@@ -52,6 +59,16 @@ public class BlogUserController {
         session.invalidate();
         return "redirect:/";
     }
+
+    @GetMapping("/blogUser")
+    public String getBlogUser(@RequestParam String userName, Model model) {
+        BlogUser blogUser = userService.getUserByName(userName);
+        List<Post> posts = postService.getAllPostByUser(blogUser);
+        model.addAttribute("blogUser", blogUser);
+        model.addAttribute("posts", posts);
+        return "blogUser";
+    }
+    
 
     @PostMapping("/handleRegister")
     public String registerBlogUser(BlogUser blogUser) {
