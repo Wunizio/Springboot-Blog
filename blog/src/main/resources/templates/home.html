@@ -8,5 +8,11 @@
 <body>
     <h th:text="${'Welcome ' +blogUser.name+'!'}"></h>
     <a th:href="@{/createBlogpost(name=${blogUser.name})}">Create new Blogpost</a>
+
+    <br>
+    <tr th:each="post : ${posts}">
+        <td th:text="${post.name}"></td>
+        <br>
+    </tr>
 </body>
 </html>

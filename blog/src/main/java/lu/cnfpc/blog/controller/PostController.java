@@ -32,9 +32,10 @@ public class PostController {
 
     @GetMapping("/home")
     public String getHome(@RequestParam String name, Model model) {
-        System.out.println(name);
+        BlogUser blogUser = blogUserService.getUserByName(name);
         //Not Secure
-        model.addAttribute("blogUser", blogUserService.getUserByName(name));
+        model.addAttribute("blogUser", blogUser);
+        model.addAttribute("posts", postService.getAllPostByUser(blogUser));
         return "home";
     }
 
