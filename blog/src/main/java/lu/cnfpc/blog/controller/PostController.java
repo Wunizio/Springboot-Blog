@@ -12,6 +12,7 @@ import lu.cnfpc.blog.model.Category;
 import lu.cnfpc.blog.model.Post;
 import lu.cnfpc.blog.service.BlogUserService;
 import lu.cnfpc.blog.service.CategoryService;
+import lu.cnfpc.blog.service.FollowerService;
 import lu.cnfpc.blog.service.PostService;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,11 +33,14 @@ public class PostController {
     private final BlogUserService blogUserService;
     @Autowired
     private final CategoryService categoryService;
+    @Autowired
+    private final FollowerService followerService;
 
-    public PostController(PostService postService, BlogUserService blogUserService, CategoryService categoryService){
+    public PostController(PostService postService, BlogUserService blogUserService, CategoryService categoryService, FollowerService followerService){
         this.postService = postService;
         this.blogUserService = blogUserService;
         this.categoryService = categoryService;
+        this.followerService = followerService;
     }
 
     @GetMapping("/home")
@@ -47,8 +51,12 @@ public class PostController {
         }
 
         BlogUser blogUser = blogUserService.getUserByName(userName);
+        List<BlogUser> followedUsers = followerService.findUsersFollowedByThisUser(blogUser);
+        List<BlogUser> followers = followerService.findUsersFollowingThisUser(blogUser);
         model.addAttribute("blogUser", blogUser);
         model.addAttribute("posts", postService.getAllPostByUser(blogUser));
+        model.addAttribute("followedUsers", followedUsers);
+        model.addAttribute("followers", followers);
         return "home";
     }
 

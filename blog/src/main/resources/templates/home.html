@@ -33,5 +33,23 @@
             <td><a th:href="@{/post(name=${post.blogUser.name}, id=${post.postId})}">Go to Blog Post</a></td>
         </tr>
     </table>
+
+    <table id="followedUsers">
+        <tr>
+            <th>User Followed</th>
+        </tr>
+        <tr th:each="followedUser : ${followedUsers}">
+            <td><a th:href="@{/blogUser(userName=${followedUser.name})}" th:text="${followedUser.name}"></a></td>
+        </tr>
+    </table>
+
+    <table id="followers">
+        <tr>
+            <th>Followers</th>
+        </tr>
+        <tr th:each="follower : ${followers}">
+            <td><a th:href="@{/blogUser(userName=${follower.name})}" th:text="${follower.name}"></a></td>  
+        </tr>
+    </table>
 </body>
 </html>

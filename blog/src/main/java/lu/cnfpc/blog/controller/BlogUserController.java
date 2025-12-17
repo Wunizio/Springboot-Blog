@@ -7,8 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import lu.cnfpc.blog.model.BlogUser;
+import lu.cnfpc.blog.model.Follower;
+import lu.cnfpc.blog.model.FollowerKey;
 import lu.cnfpc.blog.model.Post;
 import lu.cnfpc.blog.service.BlogUserService;
+import lu.cnfpc.blog.service.FollowerService;
 import lu.cnfpc.blog.service.PostService;
 
 import org.springframework.web.bind.annotation.CookieValue;
@@ -30,10 +33,13 @@ public class BlogUserController {
     private final BlogUserService userService;
     @Autowired
     private final PostService postService;
+    @Autowired
+    private final FollowerService followerService;
 
-    public BlogUserController(BlogUserService userService, PostService postService){
+    public BlogUserController(BlogUserService userService, PostService postService, FollowerService followerService){
         this.userService = userService;
         this.postService = postService;
+        this.followerService = followerService;
     }
 
     @GetMapping("/")    
@@ -68,12 +74,66 @@ public class BlogUserController {
             return "redirect:/home";
         }
 
+        BlogUser blogUserOwner = userService.getUserByName(session.getAttribute("userName").toString());
         BlogUser blogUser = userService.getUserByName(userName);
+
+        List<BlogUser> followedUsers = followerService.findUsersFollowedByThisUser(blogUser);
+        List<BlogUser> followers = followerService.findUsersFollowingThisUser(blogUser);
+
         List<Post> posts = postService.getAllPostByUser(blogUser);
+
+        //Check if user is follwing the blogUser owner
+        if (followerService.isUserAFollowingUserB(blogUserOwner, blogUser)){
+            model.addAttribute("isFollowing", "true");
+        }
+        else{
+            model.addAttribute("isFollowing", "false");
+        }
+
         model.addAttribute("blogUser", blogUser);
         model.addAttribute("posts", posts);
-        return "blogUser";
+        model.addAttribute("followedUsers", followedUsers);
+        model.addAttribute("followers", followers);
+
+        return "blogUser";  
     }
+
+    @GetMapping("/followUser")
+    public String getFollowUser(@RequestParam String name, HttpSession session) {
+        String sessionName = (String) session.getAttribute("userName");
+        if(sessionName == null){
+            return "redirect:/home";
+        }
+
+        //Create new Follower Object and set attributes
+        Follower follower = new Follower();
+        follower.setFollower(userService.getUserByName(session.getAttribute("userName").toString()));
+        follower.setFollowing(userService.getUserByName(name));
+        follower.setFollowerId(new FollowerKey());
+        followerService.submitFollower(follower);
+
+        String redirectLink = "redirect:/blogUser?userName=";
+        return redirectLink.concat(name);
+    }
+
+    @GetMapping("/unfollowUser")
+    public String getUnfollowUser(@RequestParam String name, HttpSession session) {
+        String sessionName = (String) session.getAttribute("userName");
+        if(sessionName == null){
+            return "redirect:/home";
+        }
+
+        BlogUser blogUserOwner = userService.getUserByName(session.getAttribute("userName").toString());
+        BlogUser blogUser = userService.getUserByName(name);
+
+        Follower follower = followerService.findFollower(blogUserOwner, blogUser);
+        followerService.removeFollower(follower);
+
+        String redirectLink = "redirect:/blogUser?userName=";
+        return redirectLink.concat(name);
+    }
+    
+    
     
 
     @PostMapping("/handleRegister")

@@ -19,6 +19,9 @@
 
     <h1 id="title" th:text="${blogUser.name+'s Profile Page'}"></h1>
 
+    <a id="followUser" th:if="${blogUser.name != session.userName && isFollowing=='false'}" th:href="@{/followUser(name=${blogUser.name})}">Follow</a>
+    <a id="unfollowUser" th:if="${blogUser.name != session.userName && isFollowing=='true'}" th:href="@{/unfollowUser(name=${blogUser.name})}">Unfollow</a>
+
     <table id="blogPosts">
         <tr>
             <th>Title</th>
@@ -31,6 +34,24 @@
             <td th:text="${post.category.name}"></td>
             <td th:text="${post.creationDate}"></td>
             <td><a th:href="@{/post(name=${post.blogUser.name}, id=${post.postId})}">Go to Blog Post</a></td>
+        </tr>
+    </table>
+
+    <table id="followedUsers">
+        <tr>
+            <th>User Followed</th>
+        </tr>
+        <tr th:each="followedUser : ${followedUsers}">
+            <td><a th:href="@{/blogUser(userName=${followedUser.name})}" th:text="${followedUser.name}"></a></td>
+        </tr>
+    </table>
+
+    <table id="followers">
+        <tr>
+            <th>Followers</th>
+        </tr>
+        <tr th:each="follower : ${followers}">
+            <td><a th:href="@{/blogUser(userName=${follower.name})}" th:text="${follower.name}"></a></td>  
         </tr>
     </table>
 </body>
