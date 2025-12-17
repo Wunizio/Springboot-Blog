@@ -37,5 +37,36 @@ public class PostService {
     public List<Post> getAllPostByUser(BlogUser user){
         return postRepository.findByBlogUser(user);
     }
+
+    public List<Post> getAllPostOrderByDateDesc(){
+        return postRepository.findAllByOrderByCreationDateDesc();
+    }
+
+    public List<Post> getAllPostOrderByDateAsc(){
+        return postRepository.findAllByOrderByCreationDateAsc();
+    }
+
+    public List<Post> getAllPostOrderByAuthorDesc(){
+        return postRepository.findAllByOrderByBlogUserNameDesc();
+    }
+
+    public List<Post> getAllPostOrderByAuthorAsc(){
+        return postRepository.findAllByOrderByBlogUserNameAsc();
+    }
+
+    public List<Post> getAllPostOrderByTitleDesc(){
+        return postRepository.findAllByOrderByNameDesc();
+    }
     
+    public List<Post> getAllPostOrderByTitleAsc(){
+        return postRepository.findAllByOrderByNameAsc();
+    }
+
+    public List<Post> getAllPostOrderByCategoryDesc(){
+        return postRepository.findAllByOrderByCategoryNameDesc();
+    }
+
+    public List<Post> getAllPostOrderByCategoryAsc(){
+        return postRepository.findAllByOrderByCategoryNameAsc();
+    }
 }

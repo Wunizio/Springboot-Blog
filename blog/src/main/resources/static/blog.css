@@ -69,6 +69,24 @@ nav a:active{
     text-align: center;
 }
 
+#blogPosts a:link {
+  text-decoration: none;
+  color: blue;
+}
+
+#blogPosts a:visited {
+  text-decoration: none;
+  color: blue;
+}
+
+#blogPosts a:hover {
+  text-decoration: underline;
+}
+
+#blogPosts a:active {
+  text-decoration: underline;
+}
+
 #blogForm{
     border: 6px solid #948473;
     background-color: #FFE3C6;

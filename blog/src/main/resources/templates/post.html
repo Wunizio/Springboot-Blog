@@ -10,8 +10,9 @@
     <nav>
         <ul>
             <li><a th:href="@{/}">Home</a></li>
-            <li><a th:href="@{/blogUser(userName=${session.userName})}">Profile</a></li>
+            <li><a th:href="@{/blogUser(userName=${session.userName})}" th:text="${session.userName + '´s Profile Page'}">Profile</a></li>
             <li><a th:href="@{/createBlogpost}">Create new Blogpost</a></li>
+            <li><a th:href="@{/search}">Search Blogposts</a></li>
             <li><a th:href="@{/logout}">Logout</a></li>
         </ul>
     </nav>

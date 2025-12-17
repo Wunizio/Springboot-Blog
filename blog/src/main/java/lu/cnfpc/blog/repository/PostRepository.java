@@ -11,4 +11,12 @@ import lu.cnfpc.blog.model.Post;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long>{
     List<Post> findByBlogUser(BlogUser user);
+    List<Post> findAllByOrderByCreationDateDesc();
+    List<Post> findAllByOrderByCreationDateAsc();
+    List<Post> findAllByOrderByNameDesc();
+    List<Post> findAllByOrderByNameAsc();
+    List<Post> findAllByOrderByCategoryNameDesc();
+    List<Post> findAllByOrderByCategoryNameAsc();
+    List<Post> findAllByOrderByBlogUserNameDesc();
+    List<Post> findAllByOrderByBlogUserNameAsc();
 }

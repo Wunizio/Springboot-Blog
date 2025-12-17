@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/blog.css}" />
+    <title>Search Blog</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/blogUser(userName=${session.userName})}" th:text="${session.userName + '´s Profile Page'}">Profile</a></li>
+            <li><a th:href="@{/createBlogpost}">Create new Blogpost</a></li>
+            <li><a th:href="@{/search}">Search Blogposts</a></li>
+            <li><a th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <h1 id="title">Search for Blogposts</h1>
+
+     <table id="blogPosts">
+        <tr>
+            <th>Title 
+                <div class="sort">
+                    <a th:href="@{/search(property=title, order=asc)}">Asc</a>
+                    |
+                    <a th:href="@{/search(property=title, order=desc)}">Desc</a>
+                </div>
+            </th>
+            <th>Category <div class="sort">
+                 <div class="sort">
+                    <a th:href="@{/search(property=category, order=asc)}">Asc</a>
+                    |
+                    <a th:href="@{/search(property=category, order=desc)}">Desc</a>
+                </div>
+            </th>
+            <th>Date Created <div class="sort">
+                 <div class="sort">
+                    <a th:href="@{/search(property=date, order=asc)}">Asc</a>
+                    |
+                    <a th:href="@{/search(property=date, order=desc)}">Desc</a>
+                </div>
+            </th>
+            <th>Author <div class="sort">
+                 <div class="sort">
+                    <a th:href="@{/search(property=author, order=asc)}">Asc</a>
+                    |
+                    <a th:href="@{/search(property=author, order=desc)}">Desc</a>
+                </div>
+            </th>
+            <th></th>
+        </tr>
+        <tr th:each="post : ${posts}">
+            <td th:text="${post.name}"></td>
+            <td th:text="${post.category.name}"></td>
+            <td th:text="${post.creationDate}"></td>
+            <td><a th:text="${post.blogUser.name}" th:href="@{/blogUser(userName=${post.blogUser.name})}"></a></td>
+            <td><a th:href="@{/post(name=${post.blogUser.name}, id=${post.postId})}">Go to Blog Post</a></td>
+        </tr>
+    </table>
+</body>
+</html>

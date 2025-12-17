@@ -94,6 +94,38 @@ public class PostController {
         return "redirect:/home";
     }
 
+    @GetMapping("/search")
+    public String getSearch(HttpSession session, Model model, @RequestParam(required = false) String property, @RequestParam(required = false) String order) {
+        String userName = (String) session.getAttribute("userName");
+        if(userName == null){
+            return "redirect:/";
+        }
+
+        List<Post> posts;
+
+        //Check if any Parameters are null
+        if(property == null || order == null){
+            posts = postService.getAllPostOrderByDateDesc();
+        }
+        else if(property.equals("title")){
+            posts = order.equals("asc") ? postService.getAllPostOrderByTitleAsc() : postService.getAllPostOrderByTitleDesc();
+        }
+        else if(property.equals("author")){
+            posts = order.equals("asc") ? postService.getAllPostOrderByAuthorAsc() : postService.getAllPostOrderByAuthorDesc();
+        }
+        else if(property.equals("category")){
+            posts = order.equals("asc") ? postService.getAllPostOrderByCategoryAsc() : postService.getAllPostOrderByCategoryDesc();
+        }
+        else{
+            posts = order.equals("asc") ? postService.getAllPostOrderByDateAsc() : postService.getAllPostOrderByDateDesc();
+        }
+
+        model.addAttribute("posts", posts);
+        return "search";
+    }
+    
+    
+
     @PostMapping("/handleCreatePost")
     public String createPost(Post post, HttpSession session) {
         //Set BlogUser in Post based on session attribute
