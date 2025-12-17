@@ -3,17 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/blog.css}" />
     <title>Register User</title>
 </head>
 <body>
-        <form method="post" th:object="${blogUser}" th:action="@{/handleRegister}">
-            Name
-            <input type="text" th:field="*{name}" />
-            <br>
-            Password
-            <input type="text" th:field="*{password}" />
-            <br>
-            <input type="submit" value="Register" />
-        </form>
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Login</a></li>
+        </ul>
+    </nav>
+
+    <form id="registerForm" method="post" th:object="${blogUser}" th:action="@{/handleRegister}">
+        <table>
+            <tr>
+                <td>
+                    <label>Name</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{name}" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Password</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{password}" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Register">
+                </td>
+            </tr>
+        </table>
+    </form>
 </body>
 </html>

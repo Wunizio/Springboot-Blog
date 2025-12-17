@@ -98,3 +98,64 @@ nav a:active{
     display: inline-block;
     margin-bottom: 30px;
 }
+
+#blogPost{
+    display: block;
+    position: absolute;
+    top: 35%;
+    left: 50% ;
+    transform: translate(-50%, -50%);
+    text-align: left;
+}
+
+#blogPost #blogDate{
+    font-family:'Times New Roman', Times, serif;
+    margin: 0;
+}
+
+#blogPost #blogAuthor{
+    font-family:'Times New Roman', Times, serif;
+    margin: 0;
+}
+
+#blogPost #blogTitle{
+    text-decoration-line: underline; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 50px;
+    margin-bottom: 0;
+}
+
+#blogPost #blogCategory{
+    margin-top: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#blogPost #blogContent{
+    padding: 15px;
+    margin-bottom: 20px;
+    border: black 5px solid;
+    background-color: beige;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+#blogPost #blogDelete{
+    font-size: 25px;
+    color: white;
+    background:red;
+}
+
+#loginForm{
+    padding-top: 20px;
+}
+
+#loginForm table{
+    font-size: 20px;
+}
+
+#registerForm{
+    padding-top: 20px;
+}
+
+#registerForm table{
+    font-size: 20px;
+}

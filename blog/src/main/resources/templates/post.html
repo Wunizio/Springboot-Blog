@@ -16,11 +16,14 @@
         </ul>
     </nav>
 
-    <cite th:text="${post.creationDate}"></cite>
-    <h3>Written by <a th:text="${post.blogUser.name}" th:href="@{/blogUser(userName=${post.blogUser.name})}"></a> </h3>
-    <h1 th:text="${post.name}"></h1>
-    <h2 th:text="'Category: ' + ${post.category.name}"></h2>
-    <article th:text="${post.content}"></article>
-    <a th:if="${post.blogUser.name == session.userName}" th:href="@{/deletePost(id=${post.postId})}">Delete</a>
+    <div id="blogPost">
+        <p id="blogDate" th:text="${post.creationDate}"></p>
+        <h3 id="blogAuthor">Written by <a th:text="${post.blogUser.name}" th:href="@{/blogUser(userName=${post.blogUser.name})}"></a> </h3>
+        <h1 id="blogTitle" th:text="${post.name}"></h1>
+        <h2 id="blogCategory" th:text="'Category: ' + ${post.category.name}"></h2>
+        <article id="blogContent" th:text="${post.content}"></article>
+        <a id="blogDelete" th:if="${post.blogUser.name == session.userName}" th:href="@{/deletePost(id=${post.postId})}">Delete</a>
+    </div>
+    
 </body>
 </html>
