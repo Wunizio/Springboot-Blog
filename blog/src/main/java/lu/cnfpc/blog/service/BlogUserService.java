@@ -23,15 +23,15 @@ public class BlogUserService {
     }
 
     public BlogUser getUserById(Long userId){
-        return userRepository.findById(userId).orElseThrow(() -> new BlogUserNotFoundException("Customer not found with ID " + userId));
+        return userRepository.findById(userId).orElseThrow(() -> new BlogUserNotFoundException("Blog User not found with ID " + userId));
     }
 
     public BlogUser getUserByName(String userName){
-        return userRepository.findByName(userName);
+        return userRepository.findByName(userName).orElseThrow(() -> new BlogUserNotFoundException("Blog User not found with name " + userName));
     }
 
     public BlogUser loginUser(String name, String password){
-        return userRepository.findByNameAndPassword(name, password);
+        return userRepository.findByNameAndPassword(name, password).orElseThrow(() -> new BlogUserNotFoundException("Login Failed"));
     }
 
 }

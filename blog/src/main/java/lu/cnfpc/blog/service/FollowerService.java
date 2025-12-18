@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lu.cnfpc.blog.exception.FollowerNotFoundException;
 import lu.cnfpc.blog.model.BlogUser;
 import lu.cnfpc.blog.model.Follower;
 import lu.cnfpc.blog.model.FollowerKey;
@@ -29,12 +30,12 @@ public class FollowerService {
     }
 
     public boolean isUserAFollowingUserB(BlogUser userA, BlogUser userB){
-        Follower followTable = followerRepository.findByFollowingAndFollower(userB, userA);
+        Follower followTable = followerRepository.findByFollowingAndFollower(userB, userA).orElseThrow(() -> new FollowerNotFoundException("This should not show up. isUserAFollowingUserB"));
         return followTable != null ? true : false;
     }
 
     public Follower findFollower(BlogUser userA, BlogUser userB){
-        return followerRepository.findByFollowingAndFollower(userB, userA);
+        return followerRepository.findByFollowingAndFollower(userB, userA).orElseThrow(() -> new FollowerNotFoundException(userA.getName() + " is not a follower of " +userB.getName()));
     }
 
     public List<BlogUser> findUsersFollowedByThisUser(BlogUser user){

@@ -20,8 +20,8 @@ public class Post {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long postId;
 
-    @NotBlank
-    @Size(min=3, max=25)
+    @NotBlank(message = "Must have Title.")
+    @Size(min=3, max=25, message = "Tile must be between 3 and 25 characters.")
     private String name;
 
     private String content;

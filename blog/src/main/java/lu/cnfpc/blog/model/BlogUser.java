@@ -25,12 +25,12 @@ public class BlogUser {
     private Long blogUserId;
 
     @Column(unique=true)
-    @NotBlank
-    @Size(min=3, max=25)
+    @NotBlank(message = "Must have a name.")
+    @Size(min=3, max=25, message = "Name must be between 3 and 25 characters.")
     private String name;
 
-    @NotBlank
-    @Size(min=3)
+    @NotBlank(message = "Must have a password.")
+    @Size(min=3, message = "Password but be at least 3 characters.")
     private String password;
 
     @PastOrPresent

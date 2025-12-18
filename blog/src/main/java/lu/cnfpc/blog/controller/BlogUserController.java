@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
+import lu.cnfpc.blog.exception.BlogUserNotFoundException;
+import lu.cnfpc.blog.exception.FollowerNotFoundException;
 import lu.cnfpc.blog.model.BlogUser;
 import lu.cnfpc.blog.model.Follower;
 import lu.cnfpc.blog.model.FollowerKey;
@@ -22,8 +25,10 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -74,22 +79,27 @@ public class BlogUserController {
             return "redirect:/home";
         }
 
-        BlogUser blogUserOwner = userService.getUserByName(session.getAttribute("userName").toString());
+        //Set Bloguser from page and BloguserSessionOwner to the Loged in user
+        BlogUser blogUserSessionOwner = userService.getUserByName(session.getAttribute("userName").toString());
         BlogUser blogUser = userService.getUserByName(userName);
 
+        //Set the Followers and Followed Users
         List<BlogUser> followedUsers = followerService.findUsersFollowedByThisUser(blogUser);
         List<BlogUser> followers = followerService.findUsersFollowingThisUser(blogUser);
 
         List<Post> posts = postService.getAllPostByUser(blogUser);
 
-        //Check if user is follwing the blogUser owner
-        if (followerService.isUserAFollowingUserB(blogUserOwner, blogUser)){
-            model.addAttribute("isFollowing", "true");
+        //If it catches exception, UserA is not following UserB OR UserA is checking out their own Page
+        boolean isFollowing;
+        try{
+            followerService.isUserAFollowingUserB(blogUserSessionOwner, blogUser);
+            isFollowing = true;
         }
-        else{
-            model.addAttribute("isFollowing", "false");
+        catch(FollowerNotFoundException e){
+            isFollowing = false;
         }
 
+        model.addAttribute("isFollowing", isFollowing);
         model.addAttribute("blogUser", blogUser);
         model.addAttribute("posts", posts);
         model.addAttribute("followedUsers", followedUsers);
@@ -107,8 +117,16 @@ public class BlogUserController {
 
         //Create new Follower Object and set attributes
         Follower follower = new Follower();
-        follower.setFollower(userService.getUserByName(session.getAttribute("userName").toString()));
-        follower.setFollowing(userService.getUserByName(name));
+
+        //Redirect if Username does not exist anymore
+        try{
+            follower.setFollower(userService.getUserByName(session.getAttribute("userName").toString()));
+            follower.setFollowing(userService.getUserByName(name));
+        }
+        catch(BlogUserNotFoundException e){
+            return "redirect:/";
+        }
+       
         follower.setFollowerId(new FollowerKey());
         followerService.submitFollower(follower);
 
@@ -123,10 +141,28 @@ public class BlogUserController {
             return "redirect:/home";
         }
 
-        BlogUser blogUserOwner = userService.getUserByName(session.getAttribute("userName").toString());
-        BlogUser blogUser = userService.getUserByName(name);
+        BlogUser blogUserOwner;
+        BlogUser blogUser;
+        
+        //Redirect if Username does not exist anymore
+        try{
+            blogUserOwner = userService.getUserByName(session.getAttribute("userName").toString());
+            blogUser = userService.getUserByName(name);
 
-        Follower follower = followerService.findFollower(blogUserOwner, blogUser);
+        }
+        catch(BlogUserNotFoundException e){
+            return "redirect:/";
+        }
+
+        Follower follower;
+        //Catch any errors in finding the Follower association
+        try{
+            follower = followerService.findFollower(blogUserOwner, blogUser);
+        }
+        catch(FollowerNotFoundException e){
+            return "redirect:/";
+        }
+
         followerService.removeFollower(follower);
 
         String redirectLink = "redirect:/blogUser?userName=";
@@ -137,14 +173,27 @@ public class BlogUserController {
     
 
     @PostMapping("/handleRegister")
-    public String registerBlogUser(BlogUser blogUser) {
+    public String registerBlogUser(@Valid BlogUser blogUser, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return "register";
+        }
         userService.submitUser(blogUser);
         return "redirect:/";
     }
     
     @PostMapping("/handleLogin")
-    public String loginBlogUser(BlogUser attemptedUser, Model model, HttpSession session) {
-        BlogUser blogUser = userService.loginUser(attemptedUser.getName(), attemptedUser.getPassword());
+    public String loginBlogUser(BlogUser attemptedUser, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+        
+        BlogUser blogUser;
+        //Catch wrong login credentials
+        try{
+            blogUser = userService.loginUser(attemptedUser.getName(), attemptedUser.getPassword());
+        }
+        catch(BlogUserNotFoundException e){
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            return "redirect:/";
+        }
+        
         model.addAttribute("blogUser", blogUser);
         session.setAttribute("userName", blogUser.getName());
         return "redirect:/";

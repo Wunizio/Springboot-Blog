@@ -21,6 +21,7 @@
                 </td>
                 <td>
                     <input type="text" th:field="*{name}" />
+                    <a th:errors="*{name}"></a>
                 </td>
             </tr>
             <tr>
@@ -29,6 +30,7 @@
                 </td>
                 <td>
                     <input type="text" th:field="*{password}" />
+                    <a th:errors="*{password}"></a>
                 </td>
             </tr>
             <tr>
