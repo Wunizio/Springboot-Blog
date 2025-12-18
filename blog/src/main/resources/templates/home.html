@@ -19,7 +19,7 @@
 
     <h1 id="title" th:text="${'Welcome ' +blogUser.name+'!'}"></h1>
 
-    <p th:if="${message}" th:text="${message}"></p>
+    <p th:if="${message}" th:text="${message}" class="error"></p>
     <table id="blogPosts">
         <tr>
             <th>Title</th>

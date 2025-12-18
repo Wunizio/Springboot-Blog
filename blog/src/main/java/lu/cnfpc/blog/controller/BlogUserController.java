@@ -77,7 +77,7 @@ public class BlogUserController {
     }
 
     @GetMapping("/blogUser")
-    public String getBlogUser(@RequestParam String userName, Model model, HttpSession session) {
+    public String getBlogUser(@RequestParam String userName, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         String sessionName = (String) session.getAttribute("userName");
         if(sessionName == null){
             return "redirect:/home";
@@ -85,7 +85,16 @@ public class BlogUserController {
 
         //Set Bloguser from page and BloguserSessionOwner to the Loged in user
         BlogUser blogUserSessionOwner = userService.getUserByName(session.getAttribute("userName").toString());
-        BlogUser blogUser = userService.getUserByName(userName);
+        BlogUser blogUser;
+
+        //Check if userName in RequestParam exists
+        try{
+            blogUser = userService.getUserByName(userName);
+        }
+        catch(BlogUserNotFoundException e){
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            return "redirect:/home";
+        }
 
         //Set the Followers and Followed Users
         List<BlogUser> followedUsers = followerService.findUsersFollowedByThisUser(blogUser);
