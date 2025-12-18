@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import lu.cnfpc.blog.exception.BlogUserNotFoundException;
 import lu.cnfpc.blog.exception.PostNotFoundException;
 import lu.cnfpc.blog.model.BlogUser;
 import lu.cnfpc.blog.model.Post;

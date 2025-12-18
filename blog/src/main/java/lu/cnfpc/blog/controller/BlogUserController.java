@@ -14,19 +14,14 @@ import lu.cnfpc.blog.model.BlogUser;
 import lu.cnfpc.blog.model.Follower;
 import lu.cnfpc.blog.model.FollowerKey;
 import lu.cnfpc.blog.model.Post;
-import lu.cnfpc.blog.repository.BlogUserRepository;
 import lu.cnfpc.blog.service.BlogUserService;
 import lu.cnfpc.blog.service.FollowerService;
 import lu.cnfpc.blog.service.PostService;
 
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,8 +30,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class BlogUserController {
-
-    private final BlogUserRepository blogUserRepository;
     
     @Autowired 
     private final BlogUserService userService;
@@ -45,11 +38,10 @@ public class BlogUserController {
     @Autowired
     private final FollowerService followerService;
 
-    public BlogUserController(BlogUserService userService, PostService postService, FollowerService followerService, BlogUserRepository blogUserRepository){
+    public BlogUserController(BlogUserService userService, PostService postService, FollowerService followerService){
         this.userService = userService;
         this.postService = postService;
         this.followerService = followerService;
-        this.blogUserRepository = blogUserRepository;
     }
 
     @GetMapping("/")    
@@ -59,7 +51,6 @@ public class BlogUserController {
         if(userName != null){
             return "redirect:/home";
         }
-        
         //Add dummy Bloguser for the login form
         model.addAttribute("blogUser", new BlogUser());
         return "index";
@@ -100,7 +91,6 @@ public class BlogUserController {
         //Set the Followers and Followed Users
         List<BlogUser> followedUsers = followerService.findUsersFollowedByThisUser(blogUser);
         List<BlogUser> followers = followerService.findUsersFollowingThisUser(blogUser);
-
         List<Post> posts = postService.getAllPostByUser(blogUser);
 
         //If it catches exception, UserA is not following UserB OR UserA is checking out their own Page
@@ -200,14 +190,12 @@ public class BlogUserController {
         }
         model.addAttribute("message", "Username is already taken");
         return "register";
-
-        
     }
     
     @PostMapping("/handleLogin")
     public String loginBlogUser(BlogUser attemptedUser, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
-        
         BlogUser blogUser;
+
         //Catch wrong login credentials
         try{
             blogUser = userService.loginUser(attemptedUser.getName(), attemptedUser.getPassword());
@@ -225,6 +213,4 @@ public class BlogUserController {
         session.setAttribute("userName", blogUser.getName());
         return "redirect:/";
     }
-
-    
 }

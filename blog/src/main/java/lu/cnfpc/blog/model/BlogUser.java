@@ -9,9 +9,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
@@ -37,9 +34,7 @@ public class BlogUser {
     private LocalDateTime creationDate;
 
     @PastOrPresent
-    private LocalDateTime lastLogin;
-
-    private String profilePicture;
+    private LocalDateTime lastLogin;    
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "blogUser")
     private List<Post> posts;
@@ -94,14 +89,6 @@ public class BlogUser {
 
     public void setLastLogin(LocalDateTime lastLogin) {
         this.lastLogin = lastLogin;
-    }
-
-    public String getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
     }
 
     public List<Post> getPosts() {

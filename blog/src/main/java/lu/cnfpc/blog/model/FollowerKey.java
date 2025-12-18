@@ -10,8 +10,6 @@ public class FollowerKey implements Serializable{
     private Long followerKeyId;
     private Long followingKeyId;
 
-
-
     public Long getFollowerId() {
         return followerKeyId;
     }

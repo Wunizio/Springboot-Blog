@@ -1,6 +1,5 @@
 package lu.cnfpc.blog.controller;
 
-import java.io.Console;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,8 +90,8 @@ public class PostController {
         if(userName == null){
             return "redirect:/";
         }
-
         Post post;
+
         //Catch if user tries to access post that doesn't exist
         try{
             post = postService.gePost(id);
@@ -199,14 +198,12 @@ public class PostController {
             return "redirect:/home";
         }
 
-
         List<Category> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
         model.addAttribute("post", post);
         model.addAttribute("blogUser", post.getBlogUser());
         return "updateBlogpost";
     }
-    
     
 
     @PostMapping("/handleCreatePost")
@@ -247,8 +244,4 @@ public class PostController {
         postService.submitPost(post);
         return "redirect:/home";
     }
-    
-    
-    
-
 }

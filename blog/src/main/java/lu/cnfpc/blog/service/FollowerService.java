@@ -6,13 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lu.cnfpc.blog.exception.FollowerNotFoundException;
 import lu.cnfpc.blog.model.BlogUser;
 import lu.cnfpc.blog.model.Follower;
-import lu.cnfpc.blog.model.FollowerKey;
 import lu.cnfpc.blog.repository.FollowerRepository;
 
 @Service
+@Transactional
 public class FollowerService {
     @Autowired
     private final FollowerRepository followerRepository;
