@@ -91,7 +91,6 @@ public class BlogUserController {
         //Set the Followers and Followed Users
         List<BlogUser> followedUsers = followerService.findUsersFollowedByThisUser(blogUser);
         List<BlogUser> followers = followerService.findUsersFollowingThisUser(blogUser);
-        List<Post> posts = postService.getAllPostByUser(blogUser);
 
         //If it catches exception, UserA is not following UserB OR UserA is checking out their own Page
         boolean isFollowing;
@@ -105,7 +104,7 @@ public class BlogUserController {
 
         model.addAttribute("isFollowing", isFollowing);
         model.addAttribute("blogUser", blogUser);
-        model.addAttribute("posts", posts);
+        model.addAttribute("posts", postService.getAllPostByUser(blogUser));
         model.addAttribute("followedUsers", followedUsers);
         model.addAttribute("followers", followers);
 
