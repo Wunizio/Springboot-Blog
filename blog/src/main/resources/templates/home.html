@@ -34,16 +34,16 @@
         </tr>
     </table>
 
-    <table id="followedUsers">
+    <table class="followers">
         <tr>
-            <th>User Followed</th>
+            <th>Followed Users</th>
         </tr>
         <tr th:each="followedUser : ${followedUsers}">
             <td><a th:href="@{/blogUser(userName=${followedUser.name})}" th:text="${followedUser.name}"></a></td>
         </tr>
     </table>
 
-    <table id="followers">
+    <table class="followers">
         <tr>
             <th>Followers</th>
         </tr>

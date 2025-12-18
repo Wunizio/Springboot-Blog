@@ -177,3 +177,35 @@ nav a:active{
 #registerForm table{
     font-size: 20px;
 }
+
+.followers{
+    margin-top: 20px;
+}
+
+.followers th{
+    font-size: 23px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-bottom: 2px black solid;
+}
+
+.followers tr{
+    font-size: 18px;
+}
+
+.followers a:link {
+  text-decoration: none;
+  color: blue;
+}
+
+.followers a:visited {
+  text-decoration: none;
+  color: blue;
+}
+
+.followers a:hover {
+  text-decoration: underline;
+}
+
+.followers a:active {
+  text-decoration: underline;
+}
