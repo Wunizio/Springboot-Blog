@@ -19,10 +19,11 @@
 
     <h1 id="title">Create new Blog</h1>
 
-    <form id="blogForm" method="post" th:object="${blogPost}" th:action="@{/handleCreatePost}">
+    <form id="blogForm" method="post" th:object="${post}" th:action="@{/handleCreatePost}">
             <strong class="title">Name</strong>
             <br>
             <input class="input" type="text" th:field="*{name}" />
+            <a th:errors="*{name}"></a>
             <br>
             <strong class="title">Category</strong>
             <br>
@@ -34,7 +35,7 @@
             <br>
             <textarea class="input" th:field="*{content}" rows="4" cols="50"></textarea>
             <br>
-            <input type="submit" value="Register" />
+            <input type="submit" value="Submit Blog" />
         </form>
 </body>
 </html>

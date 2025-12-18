@@ -19,6 +19,7 @@
 
     <h1 id="title" th:text="${'Welcome ' +blogUser.name+'!'}"></h1>
 
+    <p th:if="${message}" th:text="${message}"></p>
     <table id="blogPosts">
         <tr>
             <th>Title</th>
@@ -30,7 +31,7 @@
             <td th:text="${post.name}"></td>
             <td th:text="${post.category.name}"></td>
             <td th:text="${post.creationDate}"></td>
-            <td><a th:href="@{/post(name=${post.blogUser.name}, id=${post.postId})}">Go to Blog Post</a></td>
+            <td><a th:href="@{/post(id=${post.postId})}">Go to Blog Post</a></td>
         </tr>
     </table>
 

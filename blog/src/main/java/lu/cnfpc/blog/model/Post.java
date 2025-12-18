@@ -21,7 +21,7 @@ public class Post {
     private Long postId;
 
     @NotBlank(message = "Must have Title.")
-    @Size(min=3, max=25, message = "Tile must be between 3 and 25 characters.")
+    @Size(min=3, max=25, message = "Title must be between 3 and 25 characters.")
     private String name;
 
     private String content;

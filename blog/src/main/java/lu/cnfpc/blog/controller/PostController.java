@@ -6,7 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
+import lu.cnfpc.blog.exception.BlogUserNotFoundException;
+import lu.cnfpc.blog.exception.PostNotFoundException;
 import lu.cnfpc.blog.model.BlogUser;
 import lu.cnfpc.blog.model.Category;
 import lu.cnfpc.blog.model.Post;
@@ -17,8 +20,10 @@ import lu.cnfpc.blog.service.PostService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -76,26 +81,56 @@ public class PostController {
         List<Category> categories = categoryService.getAllCategories();
 
         model.addAttribute("categories", categories);
-        model.addAttribute("blogPost", post);
+        model.addAttribute("post", post);
         return "createBlogpost";
     }
 
     @GetMapping("/post")
-    public String getShowBlogPost(HttpSession session, @RequestParam Long id, Model model) {
+    public String getShowBlogPost(HttpSession session, @RequestParam Long id, Model model, RedirectAttributes redirectAttributes) {
         String userName = (String) session.getAttribute("userName");
         if(userName == null){
             return "redirect:/";
         }
-        Post post = postService.gePost(id);
+
+        Post post;
+        //Catch if user tries to access post that doesn't exist
+        try{
+            post = postService.gePost(id);
+        }
+        catch(PostNotFoundException e){
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            return "redirect:/home";
+        }
+
         model.addAttribute("post", post);
         return "post";
     }
 
     @GetMapping("/deletePost")
-    public String deletePost(HttpSession session, @RequestParam Long id, Model model) {
-        //Check if owner of Post
-        String postOwner = postService.gePost(id).getBlogUser().getName();
+    public String deletePost(HttpSession session, @RequestParam Long id, Model model, RedirectAttributes redirectAttributes) {
+        
         String sessionOwner = session.getAttribute("userName").toString();
+        Post post;
+        String postOwner;
+
+        //Check if post exists
+        try{
+            post = postService.gePost(id);
+        }
+        catch(PostNotFoundException e){
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            return "redirect:/home";
+        }
+
+        //Check if post owner exists
+        try {
+            postOwner = post.getBlogUser().getName();
+        } catch (BlogUserNotFoundException e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            return "redirect:/home";
+        }
+
+        //Check if owner of Post
         if(postOwner.equals(sessionOwner)){
             postService.deletePost(id);
         }
@@ -135,7 +170,12 @@ public class PostController {
     
 
     @PostMapping("/handleCreatePost")
-    public String createPost(Post post, HttpSession session) {
+    public String createPost(@Valid Post post, BindingResult bindingResult, HttpSession session) {
+        
+        if(bindingResult.hasErrors()){
+            return "createBlogpost";
+        }
+
         //Set BlogUser in Post based on session attribute
         BlogUser blogOwner = blogUserService.getUserByName(session.getAttribute("userName").toString());
         post.setBlogUser(blogOwner);

@@ -169,8 +169,6 @@ public class BlogUserController {
         return redirectLink.concat(name);
     }
     
-    
-    
 
     @PostMapping("/handleRegister")
     public String registerBlogUser(@Valid BlogUser blogUser, BindingResult bindingResult) {
