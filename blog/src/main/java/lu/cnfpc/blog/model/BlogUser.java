@@ -30,7 +30,7 @@ public class BlogUser {
     private String name;
 
     @NotBlank(message = "Must have a password.")
-    @Size(min=3, message = "Password but be at least 3 characters.")
+    @Size(min=3, message = "Password must have at least 3 characters.")
     private String password;
 
     @PastOrPresent

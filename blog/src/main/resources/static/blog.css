@@ -209,3 +209,9 @@ nav a:active{
 .followers a:active {
   text-decoration: underline;
 }
+
+.error{
+    color: red;
+    font-size: 18px;
+    font-family:Arial, Helvetica, sans-serif;
+}

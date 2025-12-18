@@ -13,7 +13,7 @@
         </ul>
     </nav>
     
-    <p th:if="${message}" th:text="${message}"></p>
+    <p th:if="${message}" th:text="${message}" class="error"></p>
     <form id="loginForm" method="post" th:action="@{handleLogin}" th:object="${blogUser}">
         <table>
             <tr>

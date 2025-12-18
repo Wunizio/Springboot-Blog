@@ -22,8 +22,9 @@
     <form id="blogForm" method="post" th:object="${post}" th:action="@{/handleCreatePost}">
             <strong class="title">Name</strong>
             <br>
+            <a th:errors="*{name}" class="error"></a>
+            <br>
             <input class="input" type="text" th:field="*{name}" />
-            <a th:errors="*{name}"></a>
             <br>
             <strong class="title">Category</strong>
             <br>

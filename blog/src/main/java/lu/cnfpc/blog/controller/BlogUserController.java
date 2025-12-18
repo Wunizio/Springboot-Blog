@@ -13,6 +13,7 @@ import lu.cnfpc.blog.model.BlogUser;
 import lu.cnfpc.blog.model.Follower;
 import lu.cnfpc.blog.model.FollowerKey;
 import lu.cnfpc.blog.model.Post;
+import lu.cnfpc.blog.repository.BlogUserRepository;
 import lu.cnfpc.blog.service.BlogUserService;
 import lu.cnfpc.blog.service.FollowerService;
 import lu.cnfpc.blog.service.PostService;
@@ -33,6 +34,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class BlogUserController {
+
+    private final BlogUserRepository blogUserRepository;
     
     @Autowired 
     private final BlogUserService userService;
@@ -41,10 +44,11 @@ public class BlogUserController {
     @Autowired
     private final FollowerService followerService;
 
-    public BlogUserController(BlogUserService userService, PostService postService, FollowerService followerService){
+    public BlogUserController(BlogUserService userService, PostService postService, FollowerService followerService, BlogUserRepository blogUserRepository){
         this.userService = userService;
         this.postService = postService;
         this.followerService = followerService;
+        this.blogUserRepository = blogUserRepository;
     }
 
     @GetMapping("/")    
@@ -168,15 +172,26 @@ public class BlogUserController {
         String redirectLink = "redirect:/blogUser?userName=";
         return redirectLink.concat(name);
     }
-    
+
 
     @PostMapping("/handleRegister")
-    public String registerBlogUser(@Valid BlogUser blogUser, BindingResult bindingResult) {
+    public String registerBlogUser(@Valid BlogUser blogUser, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()){
             return "register";
         }
-        userService.submitUser(blogUser);
-        return "redirect:/";
+
+        //Check if Username is taken
+        try{
+            userService.getUserByName(blogUser.getName());
+        }
+        catch(BlogUserNotFoundException e){
+            userService.submitUser(blogUser);
+            return "redirect:/";
+        }
+        model.addAttribute("message", "Username is already taken");
+        return "register";
+
+        
     }
     
     @PostMapping("/handleLogin")

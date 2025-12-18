@@ -13,6 +13,7 @@
         </ul>
     </nav>
 
+    <p th:if="${message}" th:text="${message}" class="error"></p>
     <form id="registerForm" method="post" th:object="${blogUser}" th:action="@{/handleRegister}">
         <table>
             <tr>
@@ -20,8 +21,9 @@
                     <label>Name</label>
                 </td>
                 <td>
+                    <a th:errors="*{name}" class="error"></a>
+                    <br>
                     <input type="text" th:field="*{name}" />
-                    <a th:errors="*{name}"></a>
                 </td>
             </tr>
             <tr>
@@ -29,8 +31,9 @@
                     <label>Password</label>
                 </td>
                 <td>
+                    <a th:errors="*{password}" class="error"></a>
+                    <br>
                     <input type="text" th:field="*{password}" />
-                    <a th:errors="*{password}"></a>
                 </td>
             </tr>
             <tr>
