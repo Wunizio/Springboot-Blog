@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/blog.css}" />
+    <title>Update Blog</title>
+</head>
+<body>
+     <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/blogUser(userName=${session.userName})}" th:text="${session.userName + '´s Profile Page'}">Profile</a></li>
+            <li><a th:href="@{/createBlogpost}">Create new Blogpost</a></li>
+            <li><a th:href="@{/search}">Search Blogposts</a></li>
+            <li><a th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <h1 id="title">Update Blog</h1>
+
+    <form id="blogForm" method="post" th:object="${post}" th:action="@{/handleUpdatePost}">
+            <strong class="title">Name</strong>
+            <br>
+            <a th:errors="*{name}" class="error"></a>
+            <br>
+            <input class="input" type="text" th:field="*{name}" />
+            <br>
+            <strong class="title">Category</strong>
+            <br>
+            <select class="input" th:field="*{category}">
+                <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option>
+            </select>
+            <br>
+            <strong class="title">Content</strong>
+            <br>
+            <textarea class="input" th:field="*{content}" rows="4" cols="50"></textarea>
+            <br>
+            <input type="hidden" th:field="*{postId}">
+            <input type="submit" value="Update Blog" />
+        </form>
+</body>
+</html>

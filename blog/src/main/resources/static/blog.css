@@ -162,6 +162,12 @@ nav a:active{
     background:red;
 }
 
+#blogPost #blogUpdate{
+    font-size: 25px;
+    color: black;
+    background:yellow;
+}
+
 #loginForm{
     padding-top: 20px;
 }

@@ -107,7 +107,7 @@ public class PostController {
     }
 
     @GetMapping("/deletePost")
-    public String deletePost(HttpSession session, @RequestParam Long id, Model model, RedirectAttributes redirectAttributes) {
+    public String getDeletePost(HttpSession session, @RequestParam Long id, Model model, RedirectAttributes redirectAttributes) {
         
         String sessionOwner = session.getAttribute("userName").toString();
         Post post;
@@ -167,6 +167,46 @@ public class PostController {
         return "search";
     }
     
+    @GetMapping("/updatePost")
+    public String getUpdatePost(@RequestParam Long id, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        
+        String sessionOwner = (String) session.getAttribute("userName");
+        if(sessionOwner == null){
+            return "redirect:/";
+        }
+        Post post;
+        String postOwner;
+
+        //Check if post exists
+        try{
+            post = postService.gePost(id);
+        }
+        catch(PostNotFoundException e){
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            return "redirect:/home";
+        }
+
+        //Check if post owner exists
+        try {
+            postOwner = post.getBlogUser().getName();
+        } catch (BlogUserNotFoundException e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            return "redirect:/home";
+        }
+
+        //Check if owner of Post
+        if(!postOwner.equals(sessionOwner)){
+            return "redirect:/home";
+        }
+
+
+        List<Category> categories = categoryService.getAllCategories();
+        model.addAttribute("categories", categories);
+        model.addAttribute("post", post);
+        model.addAttribute("blogUser", post.getBlogUser());
+        return "updateBlogpost";
+    }
+    
     
 
     @PostMapping("/handleCreatePost")
@@ -180,6 +220,29 @@ public class PostController {
 
         //Set BlogUser in Post based on session attribute
         BlogUser blogOwner = blogUserService.getUserByName(session.getAttribute("userName").toString());
+        post.setBlogUser(blogOwner);
+        postService.submitPost(post);
+        return "redirect:/home";
+    }
+    
+    @PostMapping("/handleUpdatePost")
+    public String updatePost(@Valid Post post, BindingResult bindingResult, HttpSession session, Model model) {
+        if(bindingResult.hasErrors()){
+            //Re-add category or the values get lost
+            List<Category> categories = categoryService.getAllCategories();
+            model.addAttribute("categories", categories);
+            return "updateBlogpost";
+        }
+
+        BlogUser blogOwner = blogUserService.getUserByName(session.getAttribute("userName").toString());
+
+        //Check if Owner of PostId
+        Post postToUpdate = postService.gePost(post.getPostId());
+        if(!postToUpdate.getBlogUser().getName().equals(blogOwner.getName())){
+            return "redirect:/home";
+        }
+
+        post.setCreationDate(postToUpdate.getCreationDate());
         post.setBlogUser(blogOwner);
         postService.submitPost(post);
         return "redirect:/home";
