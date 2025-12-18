@@ -2,7 +2,7 @@
 ## Requirements
 - Java v25
 - Sprintboot v4.0.0
-- PostgreSQL 18 (Post 8080)
+- PostgreSQL 18 (Port: ***8080***)
 Run command ***java -jar blog-0.0.1-SNAPSHOT.jar***
 
 ## Configuration
