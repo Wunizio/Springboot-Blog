@@ -170,9 +170,11 @@ public class PostController {
     
 
     @PostMapping("/handleCreatePost")
-    public String createPost(@Valid Post post, BindingResult bindingResult, HttpSession session) {
-        
+    public String createPost(@Valid Post post, BindingResult bindingResult, HttpSession session, Model model) {
         if(bindingResult.hasErrors()){
+            //Re-add category or the values get lost
+            List<Category> categories = categoryService.getAllCategories();
+            model.addAttribute("categories", categories);
             return "createBlogpost";
         }
 
