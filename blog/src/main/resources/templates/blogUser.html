@@ -18,6 +18,7 @@
     </nav>
 
     <h1 id="title" th:text="${blogUser.name+'s Profile Page'}"></h1>
+    <p id="lastLoginDate" th:if="${blogUser.lastLogin != null}" th:text="${'Last Login was: ' + blogUser.lastLogin}"></p>
 
     <a id="followUser" th:if="${blogUser.name != session.userName && isFollowing==false}" th:href="@{/followUser(name=${blogUser.name})}">Follow</a>
     <a id="unfollowUser" th:if="${blogUser.name != session.userName && isFollowing==true}" th:href="@{/unfollowUser(name=${blogUser.name})}">Unfollow</a>

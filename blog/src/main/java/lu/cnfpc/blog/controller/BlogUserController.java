@@ -1,5 +1,6 @@
 package lu.cnfpc.blog.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -216,6 +217,10 @@ public class BlogUserController {
             return "redirect:/";
         }
         
+        //Save LastLogin
+        blogUser.setLastLogin(LocalDateTime.now());
+        userService.submitUser(blogUser);
+
         model.addAttribute("blogUser", blogUser);
         session.setAttribute("userName", blogUser.getName());
         return "redirect:/";
